@@ -64,7 +64,6 @@ public class URLApiController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
     public String show() {
-        logger.info("Ingresa al método de show all");
         return urlApiService.all().toString();
     }
 
