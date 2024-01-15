@@ -39,7 +39,6 @@ public class URLApiService {
                     .put("key", shortUrl)
                     .put("value", originalUrl);
 
-            //TODO: hacer un refactor de esta llamada para que ocurra de forma asíncrona
             repository.insertInDB(jsonPair);
             urlMap.add(shortUrl, originalUrl);
             return shortUrl;
