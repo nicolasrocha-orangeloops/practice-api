@@ -28,7 +28,7 @@ public class URLRepository {
         var shortUrl = object.get("key");
         var longUrl = object.getString("value");
         var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, longUrl);
-        logger.info(query);
+        logger.debug(query);
 
         try (Statement statement = client.con.createStatement()) {
             statement.executeUpdate(query);
@@ -41,7 +41,7 @@ public class URLRepository {
     public String find(String shortUrl) {
         var query = String.format("SELECT url_long FROM urls WHERE url_short = \'%s\'", shortUrl);
         String expandedUrl = null;
-        logger.info(query);
+        logger.debug(query);
 
 
         try (Statement statement = client.con.createStatement()) {
