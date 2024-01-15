@@ -1,13 +1,10 @@
 package com.practice.practiceapi.services;
 
 import com.practice.practiceapi.Repositories.URLRepository;
-import com.practice.practiceapi.core.Client;
 import com.practice.practiceapi.core.URLMap;
 import com.practice.practiceapi.exceptions.IncorrectURLException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +14,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class URLApiService {
-    private final String BASE_URL = "nicoapp.com/";
     private Integer urlCounter = 0;
 
-    private Logger logger = LoggerFactory.getLogger(URLApiService.class);
-    private URLMap urlMap;
-    private URLRepository repository;
+    private final URLMap urlMap;
+    private final URLRepository repository;
 
     @Autowired
     public URLApiService(URLMap urlMap, URLRepository repository) {
@@ -84,7 +79,8 @@ public class URLApiService {
         // Uso DigestUtils de ApacheCommons para realizar el hashing
         var hashedUrl = DigestUtils.sha256Hex(originalUrl);
 
-        return BASE_URL + urlCounter.toString() + hashedUrl;
+        String baseUrl = "nicoapp.com/";
+        return baseUrl + urlCounter.toString() + hashedUrl;
     }
 
     public JSONObject all() {
