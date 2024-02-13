@@ -77,7 +77,7 @@ public class URLApiService {
         urlCounter ++;
 
         // Uso DigestUtils de ApacheCommons para realizar el hashing
-        var hashedUrl = DigestUtils.sha256Hex(originalUrl);
+        var hashedUrl = DigestUtils.sha256Hex(originalUrl).substring(0, 10);
 
         String baseUrl = "nicoapp.com/";
         return baseUrl + urlCounter.toString() + hashedUrl;
