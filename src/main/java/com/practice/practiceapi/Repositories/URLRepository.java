@@ -28,6 +28,7 @@ public class URLRepository {
         var shortUrl = object.get("key");
         var longUrl = object.getString("value");
         var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, longUrl);
+        var shortUrl = object.getString("key");
         logger.debug(query);
 
         try (Statement statement = client.con.createStatement()) {
@@ -36,6 +37,9 @@ public class URLRepository {
             logger.error("No se pudo insertar el objeto en la base de datos.");
             e.printStackTrace();
         }
+
+        urlMap.add(shortUrl, originalUrl);
+
     }
 
     public String find(String shortUrl) {
