@@ -5,6 +5,8 @@ import com.practice.practiceapi.core.URLMap;
 import com.practice.practiceapi.exceptions.IncorrectURLException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class URLApiService {
+    private final Logger logger = LoggerFactory.getLogger(URLApiService.class);
     private Integer urlCounter = 0;
 
     private final URLMap urlMap;
