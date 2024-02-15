@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 @Component
 public class URLMap {
-    private Logger logger = LoggerFactory.getLogger(URLMap.class);
 
     private HashMap<String, String> urlMap = new HashMap<>();
 
@@ -26,10 +25,6 @@ public class URLMap {
     public void add(String shortUrl, String originalUrl) {
 
         this.urlMap.put(shortUrl, originalUrl);
-        logger.info("Estado del mapa actual: ");
-        for (String key : urlMap.keySet()) {
-            logger.info(key + ": " + this.urlMap.get(key));
-        }
     }
 
     public String get(String shortUrl) {
