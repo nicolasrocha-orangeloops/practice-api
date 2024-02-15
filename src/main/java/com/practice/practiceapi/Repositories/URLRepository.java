@@ -1,6 +1,7 @@
 package com.practice.practiceapi.Repositories;
 
 import com.practice.practiceapi.core.Client;
+import com.practice.practiceapi.core.URLMap;
 import com.practice.practiceapi.services.URLApiService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -17,9 +18,11 @@ import java.sql.Statement;
 public class URLRepository {
     private Logger logger = LoggerFactory.getLogger(URLApiService.class);
     private Client client;
+    private final URLMap urlMap;
 
     @Autowired
-    public URLRepository(Client client) {
+    public URLRepository(URLMap urlMap, Client client) {
+        this.urlMap = urlMap;
         this.client = client;
     }
 
@@ -30,6 +33,7 @@ public class URLRepository {
         var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, longUrl);
         var shortUrl = object.getString("key");
         var originalUrl = object.getString("value");
+        var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, originalUrl);
         logger.debug(query);
 
         try (Statement statement = client.con.createStatement()) {
