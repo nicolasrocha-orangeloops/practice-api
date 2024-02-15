@@ -23,7 +23,7 @@ public class URLMap {
         this.urlMap.put(shortUrl, originalUrl);
     }
 
-    public String get(String shortUrl) {
+    public String getOriginalUrl(String shortUrl) {
         return this.urlMap.get(shortUrl);
     }
 
