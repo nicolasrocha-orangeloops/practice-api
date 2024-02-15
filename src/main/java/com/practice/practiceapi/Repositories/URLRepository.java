@@ -28,9 +28,6 @@ public class URLRepository {
 
     @Async
     public void insertInDB(JSONObject object) {
-        var shortUrl = object.get("key");
-        var longUrl = object.getString("value");
-        var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, longUrl);
         var shortUrl = object.getString("key");
         var originalUrl = object.getString("value");
         var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, originalUrl);
