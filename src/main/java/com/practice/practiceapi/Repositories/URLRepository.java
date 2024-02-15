@@ -58,4 +58,35 @@ public class URLRepository {
 
         return expandedUrl;
     }
+
+    public String findShortByOriginal(String originalUrl) {
+        var query = String.format("SELECT url_short FROM urls WHERE url_long = \'%s\'", originalUrl);
+        String shortUrl = null;
+
+        for (String key : urlMap.getUrlMap().keySet()) {
+
+            if (urlMap.getOriginalUrl(key).equals(originalUrl)) {
+                logger.info(String.format("Enlace a %s recuperado desde mapa local", originalUrl));
+                return key;
+            }
+        }
+
+        if (shortUrl == null) {
+            try (Statement statement = client.con.createStatement()) {
+                ResultSet result = statement.executeQuery(query);
+
+                while (result.next()) {
+                    shortUrl = result.getString("url_short");
+                    urlMap.add(shortUrl, originalUrl);
+                    logger.info(String.format("Enlace a %s recuperado desde base de datos", originalUrl));
+
+                }
+            } catch (SQLException e) {
+                logger.error("No se pudo obtener el objeto de la base de datos.");
+                e.printStackTrace();
+            }
+        }
+
+        return shortUrl;
+    }
 }
