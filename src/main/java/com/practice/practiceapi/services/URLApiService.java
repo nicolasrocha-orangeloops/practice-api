@@ -32,14 +32,21 @@ public class URLApiService {
     public String shorten(String originalUrl) throws IncorrectURLException{
 
         if (isUrl(originalUrl)){
-            var shortUrl = cut(originalUrl);
-            var jsonPair = new JSONObject()
-                    .put("key", shortUrl)
-                    .put("value", originalUrl);
+            var existingShortUrl = repository.findShortByOriginal(originalUrl);
 
-            repository.insertInDB(jsonPair);
-            urlMap.add(shortUrl, originalUrl);
-            return shortUrl;
+            if (existingShortUrl == null) {
+                var shortUrl = cut(originalUrl);
+                var jsonPair = new JSONObject()
+                        .put("key", shortUrl)
+                        .put("value", originalUrl);
+
+                repository.insertInDB(jsonPair);
+                logger.info(String.format("Nueva URL guardada en base de datos: %s", originalUrl));
+                return shortUrl;
+            } else {
+                return existingShortUrl;
+            }
+
         } else {
             throw new IncorrectURLException("El formato de la URL ingresada no es el correcto");
         }
