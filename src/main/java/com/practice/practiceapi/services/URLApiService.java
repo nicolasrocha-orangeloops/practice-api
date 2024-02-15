@@ -54,7 +54,7 @@ public class URLApiService {
     }
 
     public String expand(String shortUrl) {
-        String expandedUrl = urlMap.get(shortUrl);
+        String expandedUrl = urlMap.getOriginalUrl(shortUrl);
 
         // En caso de no tener la url guardada en cache, la buscamos en base de datos
         if (expandedUrl == null) {
