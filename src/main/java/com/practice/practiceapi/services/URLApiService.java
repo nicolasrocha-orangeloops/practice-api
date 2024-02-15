@@ -5,6 +5,8 @@ import com.practice.practiceapi.core.URLMap;
 import com.practice.practiceapi.exceptions.IncorrectURLException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class URLApiService {
+    private final Logger logger = LoggerFactory.getLogger(URLApiService.class);
     private Integer urlCounter = 0;
 
     private final URLMap urlMap;
@@ -29,14 +32,21 @@ public class URLApiService {
     public String shorten(String originalUrl) throws IncorrectURLException{
 
         if (isUrl(originalUrl)){
-            var shortUrl = cut(originalUrl);
-            var jsonPair = new JSONObject()
-                    .put("key", shortUrl)
-                    .put("value", originalUrl);
+            var existingShortUrl = repository.findShortByOriginal(originalUrl);
 
-            repository.insertInDB(jsonPair);
-            urlMap.add(shortUrl, originalUrl);
-            return shortUrl;
+            if (existingShortUrl == null) {
+                var shortUrl = cut(originalUrl);
+                var jsonPair = new JSONObject()
+                        .put("key", shortUrl)
+                        .put("value", originalUrl);
+
+                repository.insertInDB(jsonPair);
+                logger.info(String.format("Nueva URL guardada en base de datos: %s", originalUrl));
+                return shortUrl;
+            } else {
+                return existingShortUrl;
+            }
+
         } else {
             throw new IncorrectURLException("El formato de la URL ingresada no es el correcto");
         }
@@ -44,7 +54,7 @@ public class URLApiService {
     }
 
     public String expand(String shortUrl) {
-        String expandedUrl = urlMap.get(shortUrl);
+        String expandedUrl = urlMap.getOriginalUrl(shortUrl);
 
         // En caso de no tener la url guardada en cache, la buscamos en base de datos
         if (expandedUrl == null) {
@@ -77,7 +87,7 @@ public class URLApiService {
         urlCounter ++;
 
         // Uso DigestUtils de ApacheCommons para realizar el hashing
-        var hashedUrl = DigestUtils.sha256Hex(originalUrl);
+        var hashedUrl = DigestUtils.sha256Hex(originalUrl).substring(0, 10);
 
         String baseUrl = "nicoapp.com/";
         return baseUrl + urlCounter.toString() + hashedUrl;
