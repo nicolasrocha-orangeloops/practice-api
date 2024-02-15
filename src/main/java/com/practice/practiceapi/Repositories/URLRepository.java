@@ -29,6 +29,7 @@ public class URLRepository {
         var longUrl = object.getString("value");
         var query = String.format("INSERT INTO urls (url_short, url_long) VALUES (\'%s\', \'%s\')", shortUrl, longUrl);
         var shortUrl = object.getString("key");
+        var originalUrl = object.getString("value");
         logger.debug(query);
 
         try (Statement statement = client.con.createStatement()) {
