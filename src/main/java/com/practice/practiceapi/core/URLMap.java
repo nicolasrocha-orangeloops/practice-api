@@ -10,10 +10,6 @@ public class URLMap {
 
     private HashMap<String, String> urlMap = new HashMap<>();
 
-    public URLMap() {
-
-    }
-
     public HashMap<String, String> getUrlMap() {
         return urlMap;
     }
